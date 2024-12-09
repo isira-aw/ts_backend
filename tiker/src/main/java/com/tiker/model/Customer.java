@@ -2,15 +2,12 @@ package com.tiker.model;
 
 import java.util.Random;
 
-/**
- * Represents a customer thread that retrieves tickets periodically.
- */
 public class Customer implements Runnable {
     private final int customerID;
     private final TicketPool ticketPool;
     private final int retrievalRate;
+    private final Vendor.TicketUpdateCallback callback;
     private final Random random = new Random();
-    private Vendor.TicketUpdateCallback callback;
 
     public Customer(int customerID, TicketPool ticketPool, int retrievalRate, Vendor.TicketUpdateCallback callback) {
         this.customerID = customerID;

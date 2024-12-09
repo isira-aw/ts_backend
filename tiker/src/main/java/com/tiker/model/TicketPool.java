@@ -1,9 +1,7 @@
 package com.tiker.model;
 
-/**
- * Represents the pool of tickets, similar to the CLI version.
- * Uses synchronized methods and wait/notify for thread safety.
- */
+
+
 public class TicketPool {
     private int totalTickets;
     private final int maxCapacity;

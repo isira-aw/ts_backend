@@ -8,13 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Entity representing configuration data to be stored in the database.
- */
 @Entity
 @Data
-@AllArgsConstructor
-//@NoArgsConstructor
+//
+//@NoArgsConstructor // Add this to generate the no-argument constructor
 public class ConfigEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,18 +22,15 @@ public class ConfigEntity {
     private int customerRetrievalRate;
     private int maxTicketCapacity;
 
-    public ConfigEntity(int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
-        this.initialTickets = initialTickets;
-        this.ticketReleaseRate = ticketReleaseRate;
-        this.customerRetrievalRate = customerRetrievalRate;
-        this.maxTicketCapacity = maxTicketCapacity;
-    }
-    public ConfigEntity() {
-    }
+    private boolean permissionGranted;
 
     public Long getId() {
         return id;
     }
+    public ConfigEntity() {
+    }
+
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -72,5 +66,21 @@ public class ConfigEntity {
     public void setMaxTicketCapacity(int maxTicketCapacity) {
         this.maxTicketCapacity = maxTicketCapacity;
     }
-}
 
+    public boolean isPermissionGranted() {
+        return permissionGranted;
+    }
+
+    public void setPermissionGranted(boolean permissionGranted) {
+        this.permissionGranted = permissionGranted;
+    }
+
+    public ConfigEntity(Long id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
+        this.id = id;
+        this.initialTickets = initialTickets;
+        this.ticketReleaseRate = ticketReleaseRate;
+        this.customerRetrievalRate = customerRetrievalRate;
+        this.maxTicketCapacity = maxTicketCapacity;
+        this.permissionGranted = permissionGranted;
+    }
+}

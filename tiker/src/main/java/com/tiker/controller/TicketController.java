@@ -1,47 +1,39 @@
 package com.tiker.controller;
 
-import com.tiker.dto.RequestConfigDto;
-import com.tiker.dto.ResponseConfigDto;
-import com.tiker.service.ConfigService;
+import com.tiker.dto.StartRequestDto;
 import com.tiker.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST Controller for handling configuration and simulation commands.
+ * Controller for starting/stopping the simulation using a chosen config ID.
  */
 @RestController
 @RequestMapping("/api/v1/tickets")
 public class TicketController {
 
     @Autowired
-    private ConfigService configService;
-
-    @Autowired
     private TicketService ticketService;
 
-    /**
-     * Endpoint to save configuration to DB.
-     */
-    @PostMapping("/config")
-    public ResponseEntity<ResponseConfigDto> saveConfig(@RequestBody RequestConfigDto dto) {
-        ResponseConfigDto response = configService.saveConfig(dto);
-        return ResponseEntity.ok(response);
+    public TicketService getTicketService() {
+        return ticketService;
     }
 
-    /**
-     * Endpoint to start the simulation.
-     */
+    public void setTicketService(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
+
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
+
     @PostMapping("/start")
-    public ResponseEntity<String> startSimulation(@RequestBody RequestConfigDto dto) {
-        ticketService.startSimulation(dto);
-        return ResponseEntity.ok("Simulation started");
+    public ResponseEntity<String> startSimulation(@RequestBody StartRequestDto startRequest) {
+        ticketService.startSimulation(startRequest.getConfigId());
+        return ResponseEntity.ok("Simulation started for config ID " + startRequest.getConfigId());
     }
 
-    /**
-     * Endpoint to stop the simulation.
-     */
     @PostMapping("/stop")
     public ResponseEntity<String> stopSimulation() {
         ticketService.stopSimulation();

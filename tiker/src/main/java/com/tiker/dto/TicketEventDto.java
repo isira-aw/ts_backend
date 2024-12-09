@@ -5,11 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO representing an event to be sent via WebSocket.
- * For example, when a vendor adds tickets or a customer retrieves tickets.
+ * DTO for sending ticket events to the frontend via WebSocket.
  */
 @Data
-//@AllArgsConstructor
 @NoArgsConstructor
 public class TicketEventDto {
     private String message;

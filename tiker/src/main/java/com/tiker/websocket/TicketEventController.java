@@ -4,17 +4,14 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
 /**
- * Controller to handle incoming WebSocket messages if needed.
- * Currently empty as we are only pushing updates from the server side.
- *
- * @MessageMapping("/hello") means if client sends message to "/app/hello",
- * this method would handle it.
+ * Currently no incoming messages from frontend are handled.
+ * This is just to demonstrate WebSocket endpoint presence.
  */
 @Controller
 public class TicketEventController {
 
     @MessageMapping("/hello")
     public void handleMessageFromClient(String message) {
-        // Currently, no handling needed. This is just an example.
+        // Not used currently. Just a placeholder.
     }
 }
