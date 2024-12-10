@@ -1,7 +1,5 @@
 package com.tiker.model;
 
-
-
 public class TicketPool {
     private int totalTickets;
     private final int maxCapacity;
@@ -13,7 +11,6 @@ public class TicketPool {
 
     public synchronized void addTickets(int count, int vendorID) {
         if (Thread.currentThread().isInterrupted()) return;
-
         int addedTickets = Math.min(count, maxCapacity - totalTickets);
         if (addedTickets > 0) {
             totalTickets += addedTickets;

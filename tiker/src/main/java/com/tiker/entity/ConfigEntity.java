@@ -4,34 +4,35 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.beans.Transient;
+
 
 @Entity
-@Data
-//
-//@NoArgsConstructor // Add this to generate the no-argument constructor
 public class ConfigEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     private int initialTickets;
     private int ticketReleaseRate;
     private int customerRetrievalRate;
-    private int maxTicketCapacity;
 
-    private boolean permissionGranted;
+    public ConfigEntity(int id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
+        this.id = id;
+        this.initialTickets = initialTickets;
+        this.ticketReleaseRate = ticketReleaseRate;
+        this.customerRetrievalRate = customerRetrievalRate;
+        this.maxTicketCapacity = maxTicketCapacity;
+        this.permissionGranted = permissionGranted;
+    }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
-    public ConfigEntity() {
-    }
 
-
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -75,12 +76,19 @@ public class ConfigEntity {
         this.permissionGranted = permissionGranted;
     }
 
-    public ConfigEntity(Long id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
-        this.id = id;
+    private int maxTicketCapacity;
+
+    // Hibernate will ignore this column
+    private boolean permissionGranted;
+
+    public ConfigEntity(int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
         this.initialTickets = initialTickets;
         this.ticketReleaseRate = ticketReleaseRate;
         this.customerRetrievalRate = customerRetrievalRate;
         this.maxTicketCapacity = maxTicketCapacity;
-        this.permissionGranted = permissionGranted;
     }
+
+    public ConfigEntity() {}
+
+    // Getters and Setters (No need for permissionGranted since it's ignored)
 }

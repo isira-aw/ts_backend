@@ -2,56 +2,42 @@ package com.tiker.controller;
 
 import com.tiker.dto.ConfigDto;
 import com.tiker.dto.NewConfigRequestDto;
-import com.tiker.dto.PermissionDto;
 import com.tiker.service.ConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/v1/configs")
 public class ConfigController {
 
+    private final Logger logger = LoggerFactory.getLogger(ConfigController.class);
+    private final ConfigService configService;
+
     public ConfigController(ConfigService configService) {
         this.configService = configService;
     }
 
-    @Autowired
-    private ConfigService configService;
 
-    @GetMapping
-    public ResponseEntity<List<ConfigDto>> getAllConfigs() {
-        return ResponseEntity.ok(configService.getAllConfigs());
-    }
-
-    @PostMapping("/new")
+    @PostMapping("/con")
     public ResponseEntity<ConfigDto> createConfig(@RequestBody NewConfigRequestDto dto) {
-        // Create and return config
-        var config = configService.createConfig(dto);
-        ConfigDto response = new ConfigDto(
-                config.getId(),
-                config.getInitialTickets(),
-                config.getTicketReleaseRate(),
-                config.getCustomerRetrievalRate(),
-                config.getMaxTicketCapacity(),
-                config.isPermissionGranted()
-        );
-        return ResponseEntity.ok(response);
+        logger.info("Received request to create config: {}", dto);
+        try {
+            var config = configService.createConfig(dto);
+            ConfigDto response = new ConfigDto(
+                    config.getId(),
+                    config.getInitialTickets(),
+                    config.getTicketReleaseRate(),
+                    config.getCustomerRetrievalRate(),
+                    config.getMaxTicketCapacity()
+            );
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error creating config", e);
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
-    @PostMapping("/permission/{id}")
-    public ResponseEntity<String> setPermission(@PathVariable Long id, @RequestBody PermissionDto permissionDto) {
-        configService.setPermission(id, permissionDto.isGrant());
-        return ResponseEntity.ok("Permission updated");
-    }
-
-    public ConfigService getConfigService() {
-        return configService;
-    }
-
-    public void setConfigService(ConfigService configService) {
-        this.configService = configService;
-    }
 }

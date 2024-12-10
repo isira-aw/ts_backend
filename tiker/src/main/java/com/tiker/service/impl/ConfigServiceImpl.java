@@ -15,29 +15,28 @@ import java.util.stream.Collectors;
 public class ConfigServiceImpl implements ConfigService {
 
     @Autowired
-    private ConfigRepository repo;
-
-    @Override
-    public ConfigEntity createConfig(NewConfigRequestDto dto) {
-        ConfigEntity entity = new ConfigEntity();
-        entity.setInitialTickets(dto.getInitialTickets());
-        entity.setTicketReleaseRate(dto.getTicketReleaseRate());
-        entity.setCustomerRetrievalRate(dto.getCustomerRetrievalRate());
-        entity.setMaxTicketCapacity(dto.getMaxTicketCapacity());
-        entity.setPermissionGranted(false);
-        return repo.save(entity);
-    }
-
-    public ConfigRepository getRepo() {
-        return repo;
-    }
-
-    public void setRepo(ConfigRepository repo) {
-        this.repo = repo;
-    }
+    private final ConfigRepository repo;
 
     public ConfigServiceImpl(ConfigRepository repo) {
         this.repo = repo;
+    }
+
+    @Override
+    public ConfigEntity createConfig(NewConfigRequestDto dto) {
+        ConfigEntity entity = new ConfigEntity(
+                dto.getInitialTickets(),
+                dto.getTicketReleaseRate(),
+                dto.getCustomerRetrievalRate(),
+                dto.getMaxTicketCapacity()
+        );
+        return repo.save(entity);
+    }
+
+
+    @Override
+    public ConfigEntity createConfigFromStart(int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
+        ConfigEntity entity = new ConfigEntity(initialTickets, ticketReleaseRate, customerRetrievalRate, maxTicketCapacity);
+        return repo.save(entity);
     }
 
     @Override
@@ -47,20 +46,12 @@ public class ConfigServiceImpl implements ConfigService {
                 e.getInitialTickets(),
                 e.getTicketReleaseRate(),
                 e.getCustomerRetrievalRate(),
-                e.getMaxTicketCapacity(),
-                e.isPermissionGranted()
+                e.getMaxTicketCapacity()
         )).collect(Collectors.toList());
     }
 
     @Override
-    public void setPermission(Long id, boolean grant) {
-        ConfigEntity entity = repo.findById(id).orElseThrow(() -> new RuntimeException("Config not found"));
-        entity.setPermissionGranted(grant);
-        repo.save(entity);
-    }
-
-    @Override
-    public ConfigEntity getConfigById(Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Config not found"));
+    public ConfigEntity getConfigById(int id) {
+        return repo.findById(id).orElse(null);
     }
 }

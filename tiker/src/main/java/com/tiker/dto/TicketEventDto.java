@@ -4,19 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for sending ticket events to the frontend via WebSocket.
- */
 @Data
 @NoArgsConstructor
 public class TicketEventDto {
     private String message;
     private int currentTicketCount;
-
-    public TicketEventDto(String message, int currentTicketCount) {
-        this.message = message;
-        this.currentTicketCount = currentTicketCount;
-    }
 
     public String getMessage() {
         return message;
@@ -31,6 +23,11 @@ public class TicketEventDto {
     }
 
     public void setCurrentTicketCount(int currentTicketCount) {
+        this.currentTicketCount = currentTicketCount;
+    }
+
+    public TicketEventDto(String message, int currentTicketCount) {
+        this.message = message;
         this.currentTicketCount = currentTicketCount;
     }
 }
