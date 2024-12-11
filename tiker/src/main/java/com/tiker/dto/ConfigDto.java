@@ -1,10 +1,5 @@
 package com.tiker.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 public class ConfigDto {
     private int id;
     private int initialTickets;
@@ -20,43 +15,16 @@ public class ConfigDto {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
-    public int getId() {
-        return id;
-    }
+    // Getters and setters
+    public int getId() { return id; }
+    public int getInitialTickets() { return initialTickets; }
+    public int getTicketReleaseRate() { return ticketReleaseRate; }
+    public int getCustomerRetrievalRate() { return customerRetrievalRate; }
+    public int getMaxTicketCapacity() { return maxTicketCapacity; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getInitialTickets() {
-        return initialTickets;
-    }
-
-    public void setInitialTickets(int initialTickets) {
-        this.initialTickets = initialTickets;
-    }
-
-    public int getTicketReleaseRate() {
-        return ticketReleaseRate;
-    }
-
-    public void setTicketReleaseRate(int ticketReleaseRate) {
-        this.ticketReleaseRate = ticketReleaseRate;
-    }
-
-    public int getCustomerRetrievalRate() {
-        return customerRetrievalRate;
-    }
-
-    public void setCustomerRetrievalRate(int customerRetrievalRate) {
-        this.customerRetrievalRate = customerRetrievalRate;
-    }
-
-    public int getMaxTicketCapacity() {
-        return maxTicketCapacity;
-    }
-
-    public void setMaxTicketCapacity(int maxTicketCapacity) {
-        this.maxTicketCapacity = maxTicketCapacity;
-    }
+    public void setId(int id) { this.id = id; }
+    public void setInitialTickets(int initialTickets) { this.initialTickets = initialTickets; }
+    public void setTicketReleaseRate(int ticketReleaseRate) { this.ticketReleaseRate = ticketReleaseRate; }
+    public void setCustomerRetrievalRate(int customerRetrievalRate) { this.customerRetrievalRate = customerRetrievalRate; }
+    public void setMaxTicketCapacity(int maxTicketCapacity) { this.maxTicketCapacity = maxTicketCapacity; }
 }

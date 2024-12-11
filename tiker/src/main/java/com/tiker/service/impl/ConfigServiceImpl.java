@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 public class ConfigServiceImpl implements ConfigService {
 
@@ -21,17 +20,15 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public ConfigEntity createConfig(NewConfigRequestDto dto) {
         ConfigEntity entity = new ConfigEntity(
-                0, // ID will be auto-generated
+                0,
                 dto.getInitialTickets(),
                 dto.getTicketReleaseRate(),
                 dto.getCustomerRetrievalRate(),
                 dto.getMaxTicketCapacity(),
-                dto.isPermissionGranted() // Set the permissionGranted field
+                dto.isPermissionGranted()
         );
         return repo.save(entity);
     }
-
-
 
     @Override
     public List<ConfigDto> getAllConfigs() {

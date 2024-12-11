@@ -1,32 +1,17 @@
 package com.tiker.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 public class TicketEventDto {
     private String message;
-    private int currentTicketCount;
+    private int currentCount;
 
-    public TicketEventDto(String message, int currentTicketCount) {
+    public TicketEventDto(String message, int currentCount) {
         this.message = message;
-        this.currentTicketCount = currentTicketCount;
+        this.currentCount = currentCount;
     }
 
-    public String getMessage() {
-        return message;
-    }
+    public String getMessage() { return message; }
+    public int getCurrentCount() { return currentCount; }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getCurrentTicketCount() {
-        return currentTicketCount;
-    }
-
-    public void setCurrentTicketCount(int currentTicketCount) {
-        this.currentTicketCount = currentTicketCount;
-    }
+    public void setMessage(String message) { this.message = message; }
+    public void setCurrentCount(int currentCount) { this.currentCount = currentCount; }
 }

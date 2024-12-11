@@ -1,6 +1,5 @@
 package com.tiker.service.impl;
 
-import com.tiker.dto.ConfigDto;
 import com.tiker.dto.NewConfigRequestDto;
 import com.tiker.dto.StartRequestDto;
 import com.tiker.dto.TicketEventDto;
@@ -12,8 +11,6 @@ import com.tiker.service.ConfigService;
 import com.tiker.service.TicketService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -32,28 +29,28 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void startSimulation(StartRequestDto startRequestDto) {
-        stopSimulation(); // Stop existing simulation
+        stopSimulation(); // Stop existing simulation if running
 
-        // Retrieve or create a configuration for the simulation
+        // Retrieve or create a configuration
         ConfigEntity config = retrieveOrCreateConfig(startRequestDto);
 
-        // Extract configuration values for the simulation
         int initialTickets = config.getInitialTickets();
         int ticketReleaseRate = config.getTicketReleaseRate();
         int customerRetrievalRate = config.getCustomerRetrievalRate();
         int maxTicketCapacity = config.getMaxTicketCapacity();
 
-        // Initialize ticket pool with configuration values
+        // Initialize ticket pool
         ticketPool = new TicketPool(initialTickets, maxTicketCapacity);
 
-        // Define callback for ticket updates
+        // Define callback
         Vendor.TicketUpdateCallback callback = (message, currentCount) -> {
             TicketEventDto event = new TicketEventDto(message, currentCount);
             messagingTemplate.convertAndSend("/topic/ticketUpdates", event);
         };
 
-        // Create and start vendor and customer threads
+        // Create and start vendor threads
         vendorThreads = createThreads(3, i -> new Vendor(i + 1, ticketPool, ticketReleaseRate, callback));
+        // Create and start customer threads
         customerThreads = createThreads(3, i -> new Customer(i + 1, ticketPool, customerRetrievalRate, callback));
     }
 
@@ -80,9 +77,8 @@ public class TicketServiceImpl implements TicketService {
                         dto.getTicketReleaseRate(),
                         dto.getCustomerRetrievalRate(),
                         dto.getMaxTicketCapacity(),
-                        true // Pass an appropriate value for the additional parameter
+                        true
                 );
-
                 return configService.createConfig(newConfig);
             } else {
                 throw new IllegalArgumentException("Invalid configuration values provided.");

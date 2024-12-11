@@ -1,15 +1,11 @@
 package com.tiker.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
-
 
 @Entity
-@Table(name = "config_entity")
+@Table(name = "config")
 public class ConfigEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,12 +14,10 @@ public class ConfigEntity {
     private int ticketReleaseRate;
     private int customerRetrievalRate;
     private int maxTicketCapacity;
+    private boolean permissionGranted;
 
-    @Column(nullable = false)
-    private boolean permissionGranted; // New field
-
-    // Constructors
-    public ConfigEntity() {}
+    public ConfigEntity() {
+    }
 
     public ConfigEntity(int id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
         this.id = id;
@@ -34,53 +28,18 @@ public class ConfigEntity {
         this.permissionGranted = permissionGranted;
     }
 
+    // Getters and Setters
+    public int getId() { return id; }
+    public int getInitialTickets() { return initialTickets; }
+    public int getTicketReleaseRate() { return ticketReleaseRate; }
+    public int getCustomerRetrievalRate() { return customerRetrievalRate; }
+    public int getMaxTicketCapacity() { return maxTicketCapacity; }
+    public boolean isPermissionGranted() { return permissionGranted; }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getInitialTickets() {
-        return initialTickets;
-    }
-
-    public void setInitialTickets(int initialTickets) {
-        this.initialTickets = initialTickets;
-    }
-
-    public int getTicketReleaseRate() {
-        return ticketReleaseRate;
-    }
-
-    public void setTicketReleaseRate(int ticketReleaseRate) {
-        this.ticketReleaseRate = ticketReleaseRate;
-    }
-
-    public int getCustomerRetrievalRate() {
-        return customerRetrievalRate;
-    }
-
-    public void setCustomerRetrievalRate(int customerRetrievalRate) {
-        this.customerRetrievalRate = customerRetrievalRate;
-    }
-
-    public int getMaxTicketCapacity() {
-        return maxTicketCapacity;
-    }
-
-    public void setMaxTicketCapacity(int maxTicketCapacity) {
-        this.maxTicketCapacity = maxTicketCapacity;
-    }
-
-    public boolean isPermissionGranted() {
-        return permissionGranted;
-    }
-
-    public void setPermissionGranted(boolean permissionGranted) {
-        this.permissionGranted = permissionGranted;
-    }
+    public void setId(int id) { this.id = id; }
+    public void setInitialTickets(int initialTickets) { this.initialTickets = initialTickets; }
+    public void setTicketReleaseRate(int ticketReleaseRate) { this.ticketReleaseRate = ticketReleaseRate; }
+    public void setCustomerRetrievalRate(int customerRetrievalRate) { this.customerRetrievalRate = customerRetrievalRate; }
+    public void setMaxTicketCapacity(int maxTicketCapacity) { this.maxTicketCapacity = maxTicketCapacity; }
+    public void setPermissionGranted(boolean permissionGranted) { this.permissionGranted = permissionGranted; }
 }
-
