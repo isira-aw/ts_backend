@@ -34,79 +34,76 @@ public class TicketServiceImpl implements TicketService {
     public void startSimulation(StartRequestDto startRequestDto) {
         stopSimulation(); // Stop existing simulation
 
-        ConfigEntity config;
-        if (startRequestDto.getConfigId() > 0) {
-            // Fetch configuration by ID
-            config = configService.getConfigById(startRequestDto.getConfigId());
-            if (config == null) {
-                throw new IllegalArgumentException("Configuration with ID " + startRequestDto.getConfigId() + " not found.");
-            }
-        } else {
-            // Check if input values are provided
-            if (startRequestDto.getInitialTickets() > 0 && startRequestDto.getTicketReleaseRate() > 0 &&
-                    startRequestDto.getCustomerRetrievalRate() > 0 && startRequestDto.getMaxTicketCapacity() > 0) {
+        // Retrieve or create a configuration for the simulation
+        ConfigEntity config = retrieveOrCreateConfig(startRequestDto);
 
-                // Save new configuration
-                NewConfigRequestDto newConfig = new NewConfigRequestDto(
-                        startRequestDto.getInitialTickets(),
-                        startRequestDto.getTicketReleaseRate(),
-                        startRequestDto.getCustomerRetrievalRate(),
-                        startRequestDto.getMaxTicketCapacity()
-                );
-                config = configService.createConfig(newConfig);
-
-            } else {
-                // Generate next available configuration ID
-                List<ConfigDto> allConfigs = configService.getAllConfigs();
-                if (allConfigs.isEmpty()) {
-                    throw new IllegalArgumentException("No configurations available in the database.");
-                }
-                int nextId = allConfigs.get(allConfigs.size() - 1).getId() + 1;
-                config = configService.getConfigById(nextId);
-                if (config == null) {
-                    throw new IllegalArgumentException("Configuration with ID " + nextId + " not found.");
-                }
-            }
-        }
-
-        // Extract values for simulation
+        // Extract configuration values for the simulation
         int initialTickets = config.getInitialTickets();
         int ticketReleaseRate = config.getTicketReleaseRate();
         int customerRetrievalRate = config.getCustomerRetrievalRate();
         int maxTicketCapacity = config.getMaxTicketCapacity();
 
+        // Initialize ticket pool with configuration values
         ticketPool = new TicketPool(initialTickets, maxTicketCapacity);
 
+        // Define callback for ticket updates
         Vendor.TicketUpdateCallback callback = (message, currentCount) -> {
             TicketEventDto event = new TicketEventDto(message, currentCount);
             messagingTemplate.convertAndSend("/topic/ticketUpdates", event);
         };
 
-        vendorThreads = new Thread[3];
-        customerThreads = new Thread[3];
-
-        for (int i = 0; i < 3; i++) {
-            vendorThreads[i] = new Thread(new Vendor(i + 1, ticketPool, ticketReleaseRate, callback), "Vendor-" + (i + 1));
-            customerThreads[i] = new Thread(new Customer(i + 1, ticketPool, customerRetrievalRate, callback), "Customer-" + (i + 1));
-            vendorThreads[i].start();
-            customerThreads[i].start();
-        }
+        // Create and start vendor and customer threads
+        vendorThreads = createThreads(3, i -> new Vendor(i + 1, ticketPool, ticketReleaseRate, callback));
+        customerThreads = createThreads(3, i -> new Customer(i + 1, ticketPool, customerRetrievalRate, callback));
     }
 
     @Override
     public void stopSimulation() {
-        if (vendorThreads != null) {
-            for (Thread t : vendorThreads) {
-                t.interrupt();
-            }
-            vendorThreads = null;
-        }
-        if (customerThreads != null) {
-            for (Thread t : customerThreads) {
-                t.interrupt();
-            }
-            customerThreads = null;
-        }
+        stopThreads(vendorThreads);
+        stopThreads(customerThreads);
         ticketPool = null;
+    }
+
+    private ConfigEntity retrieveOrCreateConfig(StartRequestDto dto) {
+        if (dto.getConfigId() > 0) {
+            ConfigEntity config = configService.getConfigById(dto.getConfigId());
+            if (config == null) {
+                throw new IllegalArgumentException("Configuration with ID " + dto.getConfigId() + " not found.");
+            }
+            return config;
+        } else {
+            if (dto.getInitialTickets() > 0 && dto.getTicketReleaseRate() > 0 &&
+                    dto.getCustomerRetrievalRate() > 0 && dto.getMaxTicketCapacity() > 0) {
+
+                NewConfigRequestDto newConfig = new NewConfigRequestDto(
+                        dto.getInitialTickets(),
+                        dto.getTicketReleaseRate(),
+                        dto.getCustomerRetrievalRate(),
+                        dto.getMaxTicketCapacity(),
+                        true // Pass an appropriate value for the additional parameter
+                );
+
+                return configService.createConfig(newConfig);
+            } else {
+                throw new IllegalArgumentException("Invalid configuration values provided.");
+            }
+        }
+    }
+
+    private Thread[] createThreads(int count, java.util.function.Function<Integer, Runnable> taskSupplier) {
+        Thread[] threads = new Thread[count];
+        for (int i = 0; i < count; i++) {
+            threads[i] = new Thread(taskSupplier.apply(i), "Thread-" + (i + 1));
+            threads[i].start();
+        }
+        return threads;
+    }
+
+    private void stopThreads(Thread[] threads) {
+        if (threads != null) {
+            for (Thread thread : threads) {
+                thread.interrupt();
+            }
+        }
     }
 }

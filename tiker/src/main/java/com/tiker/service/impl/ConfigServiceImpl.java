@@ -25,10 +25,12 @@ public class ConfigServiceImpl implements ConfigService {
                 dto.getInitialTickets(),
                 dto.getTicketReleaseRate(),
                 dto.getCustomerRetrievalRate(),
-                dto.getMaxTicketCapacity()
+                dto.getMaxTicketCapacity(),
+                dto.isPermissionGranted() // Set the permissionGranted field
         );
         return repo.save(entity);
     }
+
 
 
     @Override

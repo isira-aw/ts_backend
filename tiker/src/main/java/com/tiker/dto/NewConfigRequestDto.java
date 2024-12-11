@@ -5,21 +5,28 @@ import lombok.NoArgsConstructor;
 
 import jakarta.validation.constraints.Min;
 
-@Data
-@NoArgsConstructor
 public class NewConfigRequestDto {
-
-    @Min(value = 1, message = "Initial tickets must be greater than 0")
     private int initialTickets;
-
-    @Min(value = 1, message = "Ticket release rate must be greater than 0")
     private int ticketReleaseRate;
-
-    @Min(value = 1, message = "Customer retrieval rate must be greater than 0")
     private int customerRetrievalRate;
-
-    @Min(value = 1, message = "Max ticket capacity must be greater than 0")
     private int maxTicketCapacity;
+    private boolean permissionGranted; // Added field
+
+
+
+    public NewConfigRequestDto() {}
+
+    public NewConfigRequestDto(int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
+        this.initialTickets = initialTickets;
+        this.ticketReleaseRate = ticketReleaseRate;
+        this.customerRetrievalRate = customerRetrievalRate;
+        this.maxTicketCapacity = maxTicketCapacity;
+        this.permissionGranted = permissionGranted;
+    }
+
+    public boolean isPermissionGranted() {
+        return permissionGranted;
+    }
 
     public int getInitialTickets() {
         return initialTickets;
@@ -53,11 +60,9 @@ public class NewConfigRequestDto {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
-    public NewConfigRequestDto(int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
-        this.initialTickets = initialTickets;
-        this.ticketReleaseRate = ticketReleaseRate;
-        this.customerRetrievalRate = customerRetrievalRate;
-        this.maxTicketCapacity = maxTicketCapacity;
+    public void setPermissionGranted(boolean permissionGranted) {
+        this.permissionGranted = permissionGranted;
     }
+
 
 }

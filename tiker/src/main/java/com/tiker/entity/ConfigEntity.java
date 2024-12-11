@@ -1,16 +1,14 @@
 package com.tiker.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Data
-@NoArgsConstructor
 
+
+
+@Entity
+@Table(name = "config_entity")
 public class ConfigEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +18,22 @@ public class ConfigEntity {
     private int ticketReleaseRate;
     private int customerRetrievalRate;
     private int maxTicketCapacity;
+
+    @Column(nullable = false)
+    private boolean permissionGranted; // New field
+
+    // Constructors
+    public ConfigEntity() {}
+
+    public ConfigEntity(int id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
+        this.id = id;
+        this.initialTickets = initialTickets;
+        this.ticketReleaseRate = ticketReleaseRate;
+        this.customerRetrievalRate = customerRetrievalRate;
+        this.maxTicketCapacity = maxTicketCapacity;
+        this.permissionGranted = permissionGranted;
+    }
+
 
     public int getId() {
         return id;
@@ -61,11 +75,12 @@ public class ConfigEntity {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
-    public ConfigEntity(int id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
-        this.id = id;
-        this.initialTickets = initialTickets;
-        this.ticketReleaseRate = ticketReleaseRate;
-        this.customerRetrievalRate = customerRetrievalRate;
-        this.maxTicketCapacity = maxTicketCapacity;
+    public boolean isPermissionGranted() {
+        return permissionGranted;
+    }
+
+    public void setPermissionGranted(boolean permissionGranted) {
+        this.permissionGranted = permissionGranted;
     }
 }
+
