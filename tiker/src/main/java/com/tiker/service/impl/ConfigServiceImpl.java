@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 public class ConfigServiceImpl implements ConfigService {
 
@@ -19,26 +20,16 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public ConfigEntity createConfig(NewConfigRequestDto dto) {
-        ConfigEntity entity = new ConfigEntity();
-        entity.setInitialTickets(dto.getInitialTickets());
-        entity.setTicketReleaseRate(dto.getTicketReleaseRate());
-        entity.setCustomerRetrievalRate(dto.getCustomerRetrievalRate());
-        entity.setMaxTicketCapacity(dto.getMaxTicketCapacity());
-        entity.setPermissionGranted(false);
+        ConfigEntity entity = new ConfigEntity(
+                0, // ID will be auto-generated
+                dto.getInitialTickets(),
+                dto.getTicketReleaseRate(),
+                dto.getCustomerRetrievalRate(),
+                dto.getMaxTicketCapacity()
+        );
         return repo.save(entity);
     }
 
-    public ConfigRepository getRepo() {
-        return repo;
-    }
-
-    public void setRepo(ConfigRepository repo) {
-        this.repo = repo;
-    }
-
-    public ConfigServiceImpl(ConfigRepository repo) {
-        this.repo = repo;
-    }
 
     @Override
     public List<ConfigDto> getAllConfigs() {
@@ -47,20 +38,12 @@ public class ConfigServiceImpl implements ConfigService {
                 e.getInitialTickets(),
                 e.getTicketReleaseRate(),
                 e.getCustomerRetrievalRate(),
-                e.getMaxTicketCapacity(),
-                e.isPermissionGranted()
+                e.getMaxTicketCapacity()
         )).collect(Collectors.toList());
     }
 
     @Override
-    public void setPermission(Long id, boolean grant) {
-        ConfigEntity entity = repo.findById(id).orElseThrow(() -> new RuntimeException("Config not found"));
-        entity.setPermissionGranted(grant);
-        repo.save(entity);
-    }
-
-    @Override
-    public ConfigEntity getConfigById(Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("Config not found"));
+    public ConfigEntity getConfigById(int id) {
+        return repo.findById(id).orElse(null);
     }
 }

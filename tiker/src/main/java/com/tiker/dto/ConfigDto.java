@@ -1,37 +1,30 @@
 package com.tiker.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for listing all configurations in the frontend.
- */
 @Data
-
 @NoArgsConstructor
 public class ConfigDto {
-    private Long id;
+    private int id;
     private int initialTickets;
     private int ticketReleaseRate;
     private int customerRetrievalRate;
     private int maxTicketCapacity;
-    private boolean permissionGranted;
 
-    public ConfigDto(Long id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
+    public ConfigDto(int id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
         this.id = id;
         this.initialTickets = initialTickets;
         this.ticketReleaseRate = ticketReleaseRate;
         this.customerRetrievalRate = customerRetrievalRate;
         this.maxTicketCapacity = maxTicketCapacity;
-        this.permissionGranted = permissionGranted;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -65,13 +58,5 @@ public class ConfigDto {
 
     public void setMaxTicketCapacity(int maxTicketCapacity) {
         this.maxTicketCapacity = maxTicketCapacity;
-    }
-
-    public boolean isPermissionGranted() {
-        return permissionGranted;
-    }
-
-    public void setPermissionGranted(boolean permissionGranted) {
-        this.permissionGranted = permissionGranted;
     }
 }

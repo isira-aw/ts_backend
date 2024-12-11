@@ -9,6 +9,5 @@ import java.util.List;
 public interface ConfigService {
     ConfigEntity createConfig(NewConfigRequestDto dto);
     List<ConfigDto> getAllConfigs();
-    void setPermission(Long id, boolean grant);
-    ConfigEntity getConfigById(Long id);
+    ConfigEntity getConfigById(int id);
 }

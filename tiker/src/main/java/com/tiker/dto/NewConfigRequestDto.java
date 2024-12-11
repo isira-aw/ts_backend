@@ -1,29 +1,25 @@
 package com.tiker.dto;
-
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO to create a new configuration.
- * The ID will be generated automatically by the database,
- * or logic in service might modify it if needed.
- */
-@Data
 
+import jakarta.validation.constraints.Min;
+
+@Data
 @NoArgsConstructor
 public class NewConfigRequestDto {
-    private int initialTickets;
-    private int ticketReleaseRate;
-    private int customerRetrievalRate;
-    private int maxTicketCapacity;
 
-    public NewConfigRequestDto(int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
-        this.initialTickets = initialTickets;
-        this.ticketReleaseRate = ticketReleaseRate;
-        this.customerRetrievalRate = customerRetrievalRate;
-        this.maxTicketCapacity = maxTicketCapacity;
-    }
+    @Min(value = 1, message = "Initial tickets must be greater than 0")
+    private int initialTickets;
+
+    @Min(value = 1, message = "Ticket release rate must be greater than 0")
+    private int ticketReleaseRate;
+
+    @Min(value = 1, message = "Customer retrieval rate must be greater than 0")
+    private int customerRetrievalRate;
+
+    @Min(value = 1, message = "Max ticket capacity must be greater than 0")
+    private int maxTicketCapacity;
 
     public int getInitialTickets() {
         return initialTickets;
@@ -56,4 +52,12 @@ public class NewConfigRequestDto {
     public void setMaxTicketCapacity(int maxTicketCapacity) {
         this.maxTicketCapacity = maxTicketCapacity;
     }
+
+    public NewConfigRequestDto(int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
+        this.initialTickets = initialTickets;
+        this.ticketReleaseRate = ticketReleaseRate;
+        this.customerRetrievalRate = customerRetrievalRate;
+        this.maxTicketCapacity = maxTicketCapacity;
+    }
+
 }

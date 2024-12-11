@@ -1,12 +1,8 @@
 package com.tiker.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for sending ticket events to the frontend via WebSocket.
- */
 @Data
 @NoArgsConstructor
 public class TicketEventDto {
