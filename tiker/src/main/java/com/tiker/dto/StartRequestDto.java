@@ -1,13 +1,8 @@
 package com.tiker.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.Min;
 
-@Data
-@NoArgsConstructor
 public class StartRequestDto {
-
     private int configId;
 
     @Min(value = 1, message = "Initial tickets must be greater than 0")
@@ -21,6 +16,8 @@ public class StartRequestDto {
 
     @Min(value = 1, message = "Max ticket capacity must be greater than 0")
     private int maxTicketCapacity;
+
+    public StartRequestDto() {}
 
     public StartRequestDto(int configId, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity) {
         this.configId = configId;
@@ -69,4 +66,6 @@ public class StartRequestDto {
     public void setMaxTicketCapacity(int maxTicketCapacity) {
         this.maxTicketCapacity = maxTicketCapacity;
     }
+
+
 }

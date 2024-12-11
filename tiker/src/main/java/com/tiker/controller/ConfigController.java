@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/configs")
+@CrossOrigin(origins = "*")
 public class ConfigController {
 
     @Autowired
@@ -23,7 +24,7 @@ public class ConfigController {
 
     @PostMapping("/con")
     public ResponseEntity<ConfigDto> createConfig(@RequestBody NewConfigRequestDto dto) {
-        var config = configService.createConfig(dto); // Calls createConfig method in ConfigServiceImpl
+        var config = configService.createConfig(dto);
         ConfigDto response = new ConfigDto(
                 config.getId(),
                 config.getInitialTickets(),
@@ -33,6 +34,4 @@ public class ConfigController {
         );
         return ResponseEntity.ok(response);
     }
-
-
 }

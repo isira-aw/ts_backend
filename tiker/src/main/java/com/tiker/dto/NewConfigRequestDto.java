@@ -1,18 +1,11 @@
 package com.tiker.dto;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
-import jakarta.validation.constraints.Min;
 
 public class NewConfigRequestDto {
     private int initialTickets;
     private int ticketReleaseRate;
     private int customerRetrievalRate;
     private int maxTicketCapacity;
-    private boolean permissionGranted; // Added field
-
-
+    private boolean permissionGranted;
 
     public NewConfigRequestDto() {}
 
@@ -22,10 +15,6 @@ public class NewConfigRequestDto {
         this.customerRetrievalRate = customerRetrievalRate;
         this.maxTicketCapacity = maxTicketCapacity;
         this.permissionGranted = permissionGranted;
-    }
-
-    public boolean isPermissionGranted() {
-        return permissionGranted;
     }
 
     public int getInitialTickets() {
@@ -60,9 +49,12 @@ public class NewConfigRequestDto {
         this.maxTicketCapacity = maxTicketCapacity;
     }
 
+    public boolean isPermissionGranted() {
+        return permissionGranted;
+    }
+
     public void setPermissionGranted(boolean permissionGranted) {
         this.permissionGranted = permissionGranted;
     }
-
 
 }

@@ -1,11 +1,6 @@
 package com.tiker.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-
-
 
 @Entity
 @Table(name = "config_entity")
@@ -20,9 +15,8 @@ public class ConfigEntity {
     private int maxTicketCapacity;
 
     @Column(nullable = false)
-    private boolean permissionGranted; // New field
+    private boolean permissionGranted;
 
-    // Constructors
     public ConfigEntity() {}
 
     public ConfigEntity(int id, int initialTickets, int ticketReleaseRate, int customerRetrievalRate, int maxTicketCapacity, boolean permissionGranted) {
@@ -33,7 +27,6 @@ public class ConfigEntity {
         this.maxTicketCapacity = maxTicketCapacity;
         this.permissionGranted = permissionGranted;
     }
-
 
     public int getId() {
         return id;
@@ -82,5 +75,7 @@ public class ConfigEntity {
     public void setPermissionGranted(boolean permissionGranted) {
         this.permissionGranted = permissionGranted;
     }
-}
 
+    // Getters and setters
+    // ...
+}
