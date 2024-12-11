@@ -75,7 +75,5 @@ public class ConfigEntity {
     public void setPermissionGranted(boolean permissionGranted) {
         this.permissionGranted = permissionGranted;
     }
-
-    // Getters and setters
-    // ...
+    
 }

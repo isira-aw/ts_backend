@@ -13,7 +13,6 @@ public class StartRequestDto {
 
     @Min(value = 1, message = "Customer retrieval rate must be greater than 0")
     private int customerRetrievalRate;
-
     @Min(value = 1, message = "Max ticket capacity must be greater than 0")
     private int maxTicketCapacity;
 

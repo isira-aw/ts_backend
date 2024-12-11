@@ -39,6 +39,11 @@ public class TicketServiceImpl implements TicketService {
         int customerRetrievalRate = config.getCustomerRetrievalRate();
         int maxTicketCapacity = config.getMaxTicketCapacity();
 
+        // Validate the rates
+        if (ticketReleaseRate <= 0 || customerRetrievalRate <= 0) {
+            throw new IllegalArgumentException("Ticket release rate and customer retrieval rate must be greater than 0.");
+        }
+
         // Initialize ticket pool
         ticketPool = new TicketPool(initialTickets, maxTicketCapacity);
 
