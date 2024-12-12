@@ -1,4 +1,3 @@
-# ts_backend
 
 # Ticket Simulation System
 
